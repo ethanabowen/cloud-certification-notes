@@ -447,6 +447,105 @@ How to securely connect?
 * Inter-Region peering connects AWS Transit Gateways together using the AWS global network (AWS's private internet)
 * Data is automatically encrypted and never tranels over a public network
 
+# AWS Databases
+
+|Data Store|Use Case|
+|---|---|
+|Database on ECS| Need full control over instance and database <br> Third-party database engine (not available in RDS)|
+|Amazon RDS| Need traditional relational database <br> e.g. Oracle, PostgreSQL, Microsoft SQL, MariaDB <br> Data is well-formed and structured|
+|Amazon DynamoDB| NoSQL database <br> In-memory performance <br> High I/O needs <br> Dynamic scaling|
+|Amazon RedShift| Data warehouse for large volumes of aggregated data|
+|Amazon ElastiCache| Fast temporary storage for small amounts of data|
+
+### Operational vs Analytic
+|Operational/Transational|Analytical|
+|---|---|
+|Online Tranaction Processiong (OLTP)|Online Analytics Processing (OLAP) - the source data ceomf rom OLTP DBs|
+|Production DBs that process transactions (typically customer oriented-db)|Data warehouse or Analytics focused.  Data is extracted for decision making|
+|Short transactions and simple queries|Long transactions and complex queries|
+|Relational examples: Amazon RDS, Oracle, IBM DB2, MySQL|Relational Examples: Amazon RedShirt, Teradata, HP Vertica|
+|Non-relational examples: MongoDB, Cassandra, Neo4j, HBase|Non-relational examples: Amazon EMR (uses Hadoop), MapReduce|
+
+# Amazon Relational Database Service (RDS)
+* RDS is a managed service that makes it easy to set up, operate, and scale a relational database in the cloud
+* RDS uses EC2 instances, so you must choose and instance family/type
+* Relational database are knowm as Structured Qery Languages (SQL) databases
+* RDS is in OLTP database
+* Easy to setup, highly available, fault tolerant, and scalable
+* Common use cases include online stores and banking systems
+* You can encrypt your RDS instances and snapshots at rest by enabled the encrpytion option for your Amazon RDS DB instances
+* Encryption uses AWS Key Management Services (KMS)
+
+## Types and details
+* SQL Server
+* Oracle
+* MySQL Server
+* PostgreSQL
+* Aurora
+* MariaDB
+* Scalability: Can only be scaled up by increasing instance size (computer and stoage)
+* Fault tolerance / disaster recovery with Multi-AZ option
+* Automatic failover for Multi-AZ option
+
+### Amazon Aurora
+* RDS database, created by Amazon
+* MySQL and PostgreSQL-compatible relational database built for the cloud, up to 5x faster than standard PostgreSQL databases
+* Features a distributaed, fault-tolerant, self-healing storage system that auto-scales up to 64tb per database instance
+* RDS Read Replicas are used for scaling read performance, not for disaster recovery, can help offset traffic on RDS Master db
+
+### Amazon DynamoDB
+|DynamoDB Feature|Benefit|
+|---|---|
+|Serverless|Fully managed, fault tolerant, service|
+|Hightly available|99.99% availability SLA|
+|NoSQL type of database with Name/Value structure|Flexible scehma, good for when data is not well structured or unpredictable|
+|Horizontal scaling|Seamless scalability to any with push button scaling or Auto Scaling|
+|DynamoDB Accelerator (DAX)|Fully managed in-memory cache for DynamoDB that increases performance (microsecond latency)|
+|Backup|Point-in-time recovery down to the second in last 35 days; On-demany backup and restore|
+
+* Fully managed NoSQL database service that provides fast and predictable performance with seamless scalability
+* Push button scaling means that you can scale the DB at any time without incurring downtime
+* Data is syncchronously replicated across 3 facilities (AZs) in a region
+* Global tables provides a fully managed solution for deploying a multi-region (replicated across the world), multi-master (read/write to several masters at once, cross AZs) database
+* DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement
+
+### Amazon Redshift
+* Fast, fully managed data warehouse that makes it simple and cost-effective to analyze all your dat using standard SQL and existing BI tools
+* SQL based data warehouse used for analytics applications
+* Relational database that is used for OLAP user cases
+* Ideal for processing LARGE amounts of data for BI
+* Uses EC2 instances, so you must choose an instance family/type
+* Uses columnar data storeage - enhances performance, common data structure for analytic-oriented databases
+* Always keeps three copies of your data
+* Provides continuous/incremental backups
+
+Under the hood: Leader Node(s?) coordinates query execution to compute nodes.  Ingestion, back, restore on S3
+
+### Amazon ElastiCache
+* Web service that makes it easy to deploy and run Memcached or Redis protocol-compliant server nodes in the cloud
+* In-memory caching provided by ElastiCache can be used to significantly improve latency and throughput for many read-heavy application workloads or compute-intensive workloads
+* Run on EC2 instances, so you muct choose an instance family/type
+
+|Use Case|Benefit|
+|---|---|
+|Web session store|In cases with load-balances web servers, store web session information in Redis so if a server is lost, the session info is not lost, and another web server can pick it up|
+|Database caching|Use Memcached in fribt of AWS RDS to cache popular queries to offload work from RDS and return results faster to users|
+|Leaderboards|Use Redis to provide a live leaderboard for millions of users of your mobile app|
+|Steaming data dashboards|Provide a landing spot for streaming sensor data on the factory floor, providing live real-time dashboardd displays|
+
+* Two types of ElastiCache engines:
+  * Memcached - simplest model, can run large nodes with multiple core/threads, can be scaled in and out, can cache objects such as DBs
+  * Redis - complex model, supports encryption, master /slave replication, cross AZ (HA), automatic failover and backup/restore
+
+|Memcached|Redis|
+|---|---|
+|Simple, no-frills|You need encryption|
+|You need elasticity (scale out and in)|You need HIPPA compliance|
+|You need to run multiple CPU core and threads|Support for clustering|
+|You need to cache objects (e.g. database queries)|You need complex data types|
+||You need HA (replication)|
+||Pub/Sub capability|
+
 # Content Delivery and DNS Services
 
 ## Route 53
