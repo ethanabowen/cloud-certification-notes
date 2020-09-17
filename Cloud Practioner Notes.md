@@ -804,12 +804,74 @@ Under the hood: Leader Node(s?) coordinates query execution to compute nodes.  I
   * EFS Provisioned throughput - pay extra fee for better performance
 
 ## Network Pricing
-  * VPC
-    * VPC is free, however the following are chargeable
-      * AWS Site-to-Site VPN Connection
-      * AWS PrivateLink
-      * Amazon VPC Traffic Mirroring
-      * NAT Gateways (and Instances, though that's EC2)
-    * AWS Direct Connect
-      * Pay for Port Hours
-      * Outbound data transfer-  1GB = $.3/hour, 10G = $2.25/hour
+* VPC
+  * VPC is free, however the following are chargeable
+    * AWS Site-to-Site VPN Connection
+    * AWS PrivateLink
+    * Amazon VPC Traffic Mirroring
+    * NAT Gateways (and Instances, though that's EC2)
+  * AWS Direct Connect
+    * Pay for Port Hours
+    * Outbound data transfer-  1GB = $.3/hour, 10G = $2.25/hour
+
+## Database Pricing
+* RDS
+  * Runs on EC2 instances, so it's about clock time and instance types
+  * Clock hours of server uptime - amount of time the DB instance is running
+  * Database engine, instance size and memory
+  * Database purchase type - e.g. On-Demand, Reserved
+  * Provisioned storage - backup is included up to 100% of the size of the DB
+  * Requests - the number of input and output requests to the DB
+  * Deployment type - single AZ or multi-AZ
+  * Data transfer - input is free, output costs
+* DynamoDB
+  * Provisioned throughput (write and read)
+  * Indexed data storage
+  * On-demand capacity mode:
+    * Pay for the data reads and writes your applicaiton makes on the tables
+    * No need to specify read and write thoughput
+  * Provisioned capacity node:
+    * Specify the number of reads and writes per second you expect your application to require
+    * Can use with Auto Scaling to automatically adjust
+  * Data transfer
+  * Global tables
+  * Reserve Capacity
+  
+## CDN and DNS Service Pricing
+* Amazon CloudFront
+  * Traffic distribution - data transfer and request pricing, varies across regions, and is based on the edge location from which the content is served
+  * Requests - the number and type of requests (HTTP or HTTPS) and the geographic region in which they are made
+  * Data transfer out - quantity of data transferred out of CloudFront edge locations
+  * There are some additional chargeable items such as invalidation requestions, field-level encrpytion request, and custom SSL cerificates
+* Route 53
+  * Monthly charge for managin hosted zones
+  * DNS queries
+  * Domain names
+
+## Tools for Estimating cost and TCO
+* AWS Cost Explorer
+  * The AWS Cost Explorer is a free toll that allows you to view charts of your costs
+  * You can view cost data for the past 13 months and forecast how much you are likely to spend over the next 3 months
+  * Cost Explorer can be used to discover patterns in how much you spend on AWS resources over time and to identify cost problem areas
+  * Cost Explorer can help you to identify service usage statistics such as:
+    * Which services you use the most
+    * View metrics for which AZ has the most traffic
+    * WHich linked account is used the most
+* AWS Simple Monthly Calculator
+  * Helps customers and prospects estimate their monthly AWS bill more efficiently
+  * You can add services in different regions
+  * The calculator includes support for most AWS services and you can include additional costs such as data ingress/egress charges, data storage charges, and retrieval fees
+  * It is possible to select EC2 dedicated hosts and reserved instances with various pricing models
+  * Support can also be added
+* Total Cost of Ownership (TCO) Calculator
+  * The TCO calculator is a free tool provided by AWS that allows you to estimate the cost savings of using the <u>AWS Cloud vs. using an on-premise</u> data center.
+  *  Helps avoid large capital expenditures on hardware and infrastructure
+  *  Provides directional guidance on cost savings
+  *  Works by you inputting cost elements of your current/or esimated on-premises data center, and comparing those cost requirements with how much it would cost on AWS
+  *  What else is included in a TCO calculation?
+     *  Rack infrastructure costs
+     *  Virtualization software costs
+     *  Facilities costs (data center space, power, and cooling)
+     *  Networking costs
+     *  Data transfer costs
+     *  IT Labor costs - some labor costs are also required on AWS
