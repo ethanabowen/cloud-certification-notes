@@ -875,3 +875,66 @@ Under the hood: Leader Node(s?) coordinates query execution to compute nodes.  I
      *  Networking costs
      *  Data transfer costs
      *  IT Labor costs - some labor costs are also required on AWS
+
+## Support Plans
+* Basic - billing and account support only (access to fourms only)
+* Developer - bustiness hours support via email
+  * Only one person has unlimiteds cases
+  * Cloud Associates Engineers
+* Business - 24x7 email, char and phone support
+  * Unlimited contacts to open unlimited cases
+  * * Cloud Support Engineers
+* Enterprice - 24x7 email, chat and phone support
+  * Comes with a Technical Account Manager (TAM)
+  * Unlimited contacts to open unlimited cases
+  * Cloud Support Engineers
+  * Concierge Support Team (look into)
+* https://aws.amazon.com/premiumsupport/plans/ 
+
+## Organizations and Consolidated Billing
+* Organizations allows you to consolidate multiple AWS accounts into an organization that you create and centrally manage
+* Available in two feature sets:
+  * Consolidated Billing
+  * All features
+* Includes root accounts and organizational units
+* Policies are aookued ti riit acciybts ir OUs (look into OUs)
+* Consolidated billing includes:
+  * Paying Account - independent and cannot access resources of other accounts.
+  * Linked Accounts - all linked accounts are independent
+* Benefites of Consolidated Billing
+  * 1 bill for multiple accounts
+    * Easy tracking - you can track the charges across multiple accounts and download the **combined cost and usage data**
+    * Combined usage - You can **combined the usage across all accounts** in the organization **to share the volume pricing discounts** and Reserved Instance discounts.  This can result in **lower charge for your project**, deparyment, or company than with individual standalone accounts.
+    * No extra fee - Consolidated billing is offered at **no additional cost**
+
+## Resource Groups and Taggin
+* Tags are key/value pairs that can be attached to AWS resources
+* Tags contain metadata (data about data)
+* Tags can sometimes be inherited - e.g. resources created by Auto Scaling, CloudFormation or Elastic Beanstalk.
+* Resource groups make it easy to group resources using the tags that are assigned to then.  You can group resources that share one or more tags
+* Reousrce groups contain general information, such as:
+  * Region
+  * Name
+  * Health Checks
+* And also specific information, such as :
+  * Public & private IP addresses (for EC2)
+  * Port configuratiohns (for ELB)
+  * Database engine (for RDS)
+
+## Cost Allocation Tags
+* Cost allocation tags track your AWS costs on a detailed level
+
+
+# Application Integration
+Services that **decouple application layers**
+
+|---|---|---|
+|Service|What id does|Example use cases|
+|Simple Notification Service|Set up, operate, and send notifications from the cloud (**no polling**)|Send email notification when CloudWatch alarm is triggered|
+|Simple Queue Service|Message queue; store and forward patterns (message-oriented API, **polling**)|Building distributed/decoupled applications|
+|Simgple Workflow Service|Need to support external processes or specialized execution logic|Human-enabled workflows like an order fulfilment system or for procedural requests.  Note: AWS recommends that for new applications customers consider Step Functions instead of SWF|
+|Step Functions|Out-of-the-box coordination of AWS service components **with visual workflow**|Order processing workflow|
+
+# Management and Governance
+## AWS Config
+* Resource configuration inventory
