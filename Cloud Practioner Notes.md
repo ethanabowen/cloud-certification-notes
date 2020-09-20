@@ -938,3 +938,97 @@ Services that **decouple application layers**
 # Management and Governance
 ## AWS Config
 * Resource configuration inventory
+* Can ensure configs match a desired state
+* Provides AWS resource inventory, configuration history, and configuration change notifications to enable security and governance
+* Discover existing AWS resources, **export a complete inventory of your AWS resources** with all configuration details, and determine how a resource was configured at any point in time.
+* **These capabilites enable compliance auditing, securrity analysis, resource change tracking, and troubleshooting.**
+* Allow you assess, audit and evaluate configurations of your AWSD resources.
+* Remediation actions can automatically reseponse to non-compliant configurations (e.g. Restart EC2, Release Elastic IP, etc)
+
+## AWS Config vs AWS CloudTrail
+* CloudTrail records user API activity on your account and allows you to access information about this activity
+* Config records point -in-time configuration details for your AWS resources as Configuraiton Items (CIs)
+* Use Config to answer "What did my resouce look like?" at a point in time.
+* Use CloudTrail to answer "Who mane an API call to modify this resource?"
+
+## AWS OpsWorks
+* Configuration Management service that provides managed instances of Cher and Puppet
+* Updates include patching, updating, backup, configuration and compliance management
+* Configuration changes are submitted to OpsWorks, OpsWorks just pushes the changes to your managed instance
+  
+## AWS System Manager
+* View operational data about resources
+* Has Compliance information
+* Patch and State management
+* Run Command feature is similar to user data for EC2 instances
+
+## Trusted Advisor
+* Helps to reduce cost, increate performance and improve security by optimizing your AWS environment
+* Provides real time guidance to help you provision your resources following best practices
+* Advisor will advise you on Cost Optimization, Performance, Security, and Fault Tolerance
+
+## AWS Service Catalog
+* Allows **organization to create and manage catalogs of IT services that are approved for user on AWS**
+* These IT services can include everything from virual machine images, servers, software, and databases to complete multiu-tier application architectures
+* Alows you to centrally manage commonly deployed IT services
+* Helps to achievce consistent governance and meet compliance requirements
+
+## AWS Personal Health Dashboard
+* Provides **alerts and remediation guidance when AWS is experienceing events** that may impact you
+* Gives you a personalized view into the performance and availability of the AWS services underlying your AWS resources
+* The dashboard displays relement and timely information to help you manage AWS events in progress
+* Provides proactive notifications to help you plan for scheduled activities
+* Alerts are triggered by changes in the health of AWS resources, giving you event visibility, and guidance to help quickly diagnose the resolve issues
+* You get a personalized view of the status of the AWS services that power your applications, enabled you to quickly see when AWS is experienceing issues that may impact you
+
+## AWS Service Health Dashboard
+* Status of AWS Services across the whole world
+
+
+# AWS Cloud Security and Identity 
+
+## The Shared Responsibility Model
+* Defines what AWS and you (the consumer of AWS services) are responsible for.  It's a shared responsibility between AWs and the Customer.
+* AWS are responsible for "Security OF the Cloud"
+  * AWS is responsible for protecting the infrastructure that runs all of the services offered in the AWS Cloud
+  * This infrastructure is composed of the hardware, software, networking, and facilities that run AWS Cloud services
+* Customers are responsible for "Security IN the Cloud"
+  * For EC2 this includes network level security (NACLs, security groups), operating system patches and updates, IAM user access managemnet, and client and server-side data encrpytion
+* Inherited Controls - Customers fully inherits from AWS
+  * Physical and Environmental controls
+* Shared Controls - Controls which apply to both the infrastrucutre layer and customer layers, but in completely separate contexts of perspectives
+  * Patch Management - AWS is responsible for patching the fixing flaws within the infrastructure, but customers are responsible for patching their guest OS and applications
+  * Configuration Management - AWS maintains the configuration of its' infrastructure devices, but a customer is responsible for configuring their own guest operating systems, databases, and applications
+  * Awareness & Training - AWS trains AWS employees, but a customer must train their own employees
+* Customer Specific - Controls which are solely the responsibility of the customer based on the application they are deploying within AWS services.  Examples include:
+  * Service and Communications Protection or Zone Security which may require a customer to route or zone dat within specific security environments
+
+Examples of Customer Responsibility:
+* Staff training
+* Bucket with objects
+* Data encryption
+* IAM Role
+* IAM User
+* MFA
+* Network ACL
+* Security Group
+* SSL encrpytion
+* Patch Management
+* **EC2 Instances - OS updating**
+* Auto Scaling
+* ELB
+
+Examples of AWS Responsibility
+* Data center
+* Data center security
+* Network router
+* Network switch
+* Server
+* Storage
+* Disk drive
+* Database Server
+
+
+## AWS Penetration test
+* https://aws.amazon.com/security/penetration-testing/
+  
