@@ -1028,7 +1028,132 @@ Examples of AWS Responsibility
 * Disk drive
 * Database Server
 
+## AWS Compliance
+* Enables you to understand the robust controls in place at AWS to maintain security and data protection in the cloud
+* As systems are built on top of AWS Cloud infrastructure, **compliance responsibilities will be shared**
+* Conpliance Programs (google it) includes:
+  * Cerifications / attestations
+  * Laws, regulation, policies
+  * Alignments / frameworks
+
+## AWS Artifact
+* Your go-to, central resource for compliance-related information that matters to you
+* It provides on-demand **access to AWS' security and compliance reports** and select online agreements
+* Reports available in AWS Artifcat include
+  * Service Organization Control (SOC) reports
+  * Payment Card Industy (PCI) reports
+  * Certifications from accreditation bodies across geopraphies
+  * Compliance verticals that validate the implementation and operating effectiveness of AWS security controls
+
+## AWS Organizations Service Control Policies (SCP)
+* Service Control Policy can overwrite Account policies, even for an Administrator with Action: *, Resource: * 
+* Can have cross-account SCPs
+
+## Amazon Inspector
+* Automated **security assessment service** that **helps improve the security and compliance** of allications deployed on AWS
+* Automatically **assesses applications for vulnerabilities or deviations from best practices**
+* Uses an agent installed on EC2 instances
+* **Instances must be tagged**
+* Network Assessment doesn't require agent to be installed
+* Host Assessment does requires agent to be installed
+
+## AWS Web Application Firewall (WAF)
+* **Protects against common exploits** that could 
+  * Compromise application availability
+  * Compromise security
+  * Consume excessive resources
+* Access Control Lists used 
+
+## Shield
+* Managed Distributed Denial of Service (DDoS) protection service
+* Safeguards web applications running on AWS with **always-on dectection and automatic inline mitigations**
+* Helps to **minimize application downtime and latency**
+* Two Tiers - Standard and Advanced ($3,000/month + other fees)
+* Integrated with Amazon CloudFront
+
+## Amazon Macie
+* Fully managed **data security and data privacy service**
+* User machine **learning and pattern mathing** to discover, monitor, and **help you protect your sensitive data on S3**
+* Macie enables security compliance and preventive security as follows:
+  * Identify a variety of data types:
+    * PII
+    * Protected Health Information (PHI)
+    * Regulatory documents
+    * API keys
+    * Secret keys
+  * Identify changes to policy and acces control lists
+  * **Continuously monitor the security posture of Amazon S3**
+  * **Generate security findings** that you can view using the Macie console, AWS Security Hub, or Amazon EventBridge
+  * Manage multiple AWS accounts using AWS Organizations
+* Charged by ammount of data processed
+
+## Amazon GuardDuty
+* Threat detection service that **continuously monitors for malicious activity and unauthorized behavior** to protect your AWS accounts and workloads
+* Charged by amount of data processed
+* Intelligently Analyze:
+  * CloudTrail logs
+  * VPC flow logs
+  * DNS logs
+* **Can report or remediate the threats**
+
+## Encryption in Transit vs at Rest
+* Transit example - SSL to SSL communication (over the web)
+* Rest example - Stored data is encrypted (think EFS, S3, etc)
+  
+## AWS KMS
+* Key Management Service gives you **centrailized control over the encryption keys used to protect your data**
+* Encrypting you data at rest. ex. S3, EBS, EFS
+* Manage the keys that encrypt your data
+  * Create, import, rotate, disable, delete, define useage policies for, and audit the use of encryption keys used to encrypt your data
+* **Integrated with most other AWS services** making it easy to encrpy the data you store in these services in ecryption keys you control
+
+## AWS CloudHSM (Hardware Security Model)
+* Cloud-based hardware security module (HSM) that **enables you to easily generate and use your own encrpytion keys** on the AWS Cloud
+* KMS is multi-tenate service vs CloudHSM is **single tenant and dedicated phyical hardware module which stores the keys**
+* Users FIPS 140-2 Level 3 validated HSMs
+* Offers flexibility to integrate with inddustry-standard APIs, such as PKCS#11, Java Cryptography Extensions (JCE), and Microsoft CrpytoNG (CNG) libraries
+
+## AWS Certificate Manage (ACM)
+* Used for **creating and managing public SSL/TLS certificates** (in transit encryption)
+* **Public certificates provided by ACM** (ACM certificates) or certificates that you import into ACM
+* Can also request **private certificates from a private certificate authority (CA)** created using **AWS Certificate Manager Private Certificate Authority**
+* ACM certificates can secure multiple domain names and multiple names with a domain
+* You can also use ACM to create wildcard SSL certificates that can protect an unlimited number of subdomains
+
+## AWS Secret Manager
+* Helps your meet your security and compliance requirements by enabling you to **rotate secrets safely without the need for code deployments**
+* Built-in integration for RDS, Redshift, Amazon DocumentDB and rotates these database credentials on your behalf automatically!
+* You can customize Lambda functions to extend Secrets Manager rotation to other secret types, such as API keys and OAuth tokens
 
 ## AWS Penetration test
 * https://aws.amazon.com/security/penetration-testing/
-  
+
+## Identity Providers Federation and Directory Services
+## Microsoft AD
+* Fully managed AWS services on AWS infrastructure
+* **Best choice if you have more than 5000 users** an/or need a trust relationship set up
+* Runs on a Windows Server
+* You can setup trust relationships to extend authentication from on-premises Active Directories into the AWS cloud
+* On-premise users and groups can access resources in either domain using SSO
+* Requires a VPN or Direct Connect connection
+* Can be used as standalone AD in the AWS cloud
+
+## Simple AD
+* Inexpensive Active Directory-compatible service with common directory features.
+* Standalone, fully managed, directory on the AWS cloud
+* Simple AD is generally the least expensive option
+* **Best choice for less than 5000 users** and don't need advanced AD features
+
+## AD Connector
+* Directory **gateway for redirecting directory requests to your on-premise Active Directory**
+* Connects your existing on-premise AD to AWs
+* Best choice when you want to use an existing AD with AWS services
+* You can also join EC2 instances to you on-premise AD through AD Connector
+* You can also login to the AWS Management COnsole using your on-premise AD DCs for authentication
+
+## AWS Security Bulletins and Abuse Team
+* List of notifications of AWS' internal vulnerabilities (google Security Bulletins)
+
+## Abuse Team
+* Team to help you if you suspect AWS resources are being used for abusive purposes
+* Google Abuse Team
