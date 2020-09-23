@@ -1157,3 +1157,157 @@ Examples of AWS Responsibility
 ## Abuse Team
 * Team to help you if you suspect AWS resources are being used for abusive purposes
 * Google Abuse Team
+
+# Machine Learning
+
+## AWS Rekognition
+* Image Analysis
+* Makes it easy to add **image and video analysis to you applications using proven, highly scalable, deep learning technology trhat request no machine learning expertise to use.**
+* Can identify objects, people, text, scenes, and activities in images and videos, as well as detect any inappropriate content.
+* Also provides highly accurate facial analysis and facial search capability that you can use to detect, analyze, and compare faces for a wide variety of user verification, people counting, and public safety use cases.
+* Rekognition Video processes a video stored in an S3 bucket
+* The completion status of the request is published to an SNS topic.
+* With Rekognition Video, you can track each person with a shot and through the video across shots.
+* In streaming mode, you can **search faces against a collection with tens of millions of faces in real time**.
+* Rekognition Video users a Kinesis Video Stream as input, to process a video stream.
+
+## Amazon Transcribe
+* Transribe enables you to add speech-to-text capability to applications
+* Audio Transcribe users a deep learning process called automatic speech recognition (ASR) to convert a speech to text quickly and accurately
+* Transcribe can be used to transcribe customer service calls, to automate closed captioning and subtitling, and to generate metadat for media assets to create a fully searchable archive.
+
+## Amazon Translate
+* Translate is a **neural machine language translation service** that delives fast, high-quality, and affordable language translation results
+* Neural machine translation is a form of language translation automation that uses deep learning models to deliver more accurate and more natural sounding translation than traditional statistical and rule-based translation algorithms
+* Allows you to localize content - such as websites and applications - for international users, and to easily translate large volumes of text efficiently
+
+## Amazon Polly
+* Polly is a service that **turns text into lifelike speech**, allowing you to create applications that talk, and build entirely enw categories of speech-enabled products.
+* **Text-to-Speech (TTS) service** uses advaned deep learning technologies to **synthesize natural sounding human speech**.
+
+# Analytics
+## Amazon Athena
+* Interactive query service used to **query data in S3 buckets using Structured Query Language (SQL)**
+* Serverless, so there is no infrastructure to manage, and you pay only for the queries you run
+* Athena uses a managed Data Catalog (AWS Glue) to store information and schemas about the databases and tables that you create for your data stored in S3
+* Optimized for fast performance with S3
+* With Athena, there's no need for complex ETL jobs to prerare data for analysis
+* This makes it easy for anyone with SQL skills to quickly analyze large-scale datasets
+  
+## Amazon Kinesis
+* Kinesis makes it easy to collect, process, and analyze real-time, streaming data so you can get timely insights and react quickly to new information
+* **Real-time streaming data service**
+* Examples of streaming dat use cases include:
+  * Purchases from online stores
+  * Stock prices
+  * Game data (statistics and results as the gamer plays)
+  * Social network data
+  * Geospatial data (think uber.com)
+  * IoT sensor data
+
+## AWS Data Pipeline
+* AWS Data Pipeline is a web service that helps you reliably process and **move data between different AWS compute and storage services, as well as on-premises data sources, at specified intervals.**
+* You can regularly access your data where it's stored, transform and process it at scale, and transfer the results to services such as S3, RDS, DynamoDB, and EMR
+
+## AWS Glue
+* **Glue is to fully managed, pay-as-you-go, ETL service that automates the time-consuming steps of data preparation of analytics**
+* Glue automatically discovers and profiles data via the Glue Dat Catalog, recommends and generates ETL code to transform your source data into traget schemas
+* Simply point AWS Glue to your data stored on AWS, and AWS Glue discovers data and stores the associated metadata (e.g. table definition and schema) in the AWS Glue Data Catalog
+* Once catalog, data is immediately searchable, queryable, and available for ETL
+* Works with data lakes (e.g. data on S3), data warehouses (including RedShift), and dat stores (including RDS or Amazon EC2 databases)
+
+## Amazon QuickSight
+* Quicksight is a fast, cloud-powered BI service that makes it easy to deliver insights to everyone in your organization
+* As a fully managed service, QuickSight lets you easily create and publish interactive dashboards that include ML Insights.  Dashboards can then be accessed from any device, and embedded into your applications, portals, and websites
+
+# Architecting for the Cloud
+
+## The difference between traditional and cloud computing environments
+* IT Asserts as Provisioned Resources
+  * Provision as needed, and scale on-demand
+* Global, Available, and Scalable Capacity
+  * Deploy globally, easily, cost-effectively, and quickly
+* Higher-Level Managed Services
+  * Lower operational cost by leveraging managed storage, database, analytics, application and deployment services
+    * e.g. S3, RDS, QuickSight, Serverless
+* Built-in Security
+  * Leverage AWS' significant investment in security, simplify security testing, and use native security and encryption features
+* Architecting for Cost
+  * Fine grained billing, transparent costs, budgets and alrting tools
+* Operating on AWS
+  * Tooling, processes and bset practices to support operation transitions
+
+## Scaling vertically and horizontally
+* **Scaling Vertically - increasing resources used**
+  * EC2 instances
+  * RDS Database instances (run on EC2)
+  * Limitations
+    * Often requires manual intervention (though can be scripted/automated)
+    * Typically requires downtime
+    * Can reach a limit of scalability
+* **Scaling Horizontally (PREFERABLE!)- add more instances**
+  * DynamoDB - scaling based on read/write capacity units
+  * EC2 Auto Scaling
+  * Benefits
+    * Seamless scaling, without downtime
+    * Can scale almost limitlessly (in some cases)
+
+## Architecting for the Cloud: AWS Best Practices (google it, whitepaper)
+* Disposable resources instead of fixed servers
+  * With traditional infrastructure you work with fixed resources due to upfront costs and lead time
+  * With the cloud you can take advantage of the dynamically provisioned resources
+  * When designing for AWS you can take advantage of the dnyamically provisioned nature of cloud computing
+  * You think of servers and other components as temporary resource
+  * You can launch as many as you need, and use them only for as long as you need them
+* Automation
+  * Use automation tools on AWS to **improve system stability and organizational efficiency**
+  * Examples are:
+    * Serverless Management and Deployment
+    * Infrastrucure Management and Deployment
+    * Alarms and events
+* Loose Coupling
+  * **Design IT systems to reduce interdependencies**
+  * A change or a failure in one component should not cascade to other components
+  * Examples are:
+    * Service Discovery - components should be able to "find" each other
+    * Asynchronous Integration - introduct a layer between application components to store messages
+* Services, Not Servers
+  * Best practices that advise customers to leverage more than ust Amazon EC2
+  * Try to use the breadh of services available on AWS
+  * Examples:
+    * CloudFront for content delivery
+    * DynamoDB for NoSQL databases
+    * CloudSearch for search workloads
+    * Elastic Transcoder for video encoding
+* Databases
+  * Use the right database technology for each workload
+  * Consider performance requirements, scalability, durability, functionality, etc.
+  * Choose bettewen Relational, NoSql, Dat Warehouse, Search, and Graph
+* Removing Single Points of Failure
+  * **Design for failure! (REMEMBER THIS!)**
+  * Intorduct redundancy - ensure if a component/ resource fails, another can take over
+  * Detect failure - use health checks and alarms to try to automate detection and reaction
+  * Durable Data Storage - ensure your data aligns with your Recovery Point Objective (RPO) and Recovery Time Objective (RTO)
+  * Automated Multi-Data Center Resiliencee - be resilient in the face of a major disater
+* Optimize for Cost
+  * Right Sizing - use the best instance sizes and number of instances for cost efficiency
+  * Elasticity - horizontally scale as needed with changing demand
+  * Take Advantage of the Variety of Purchaing Options - use Reserved Instances and Spot Instances
+* Caching
+  * Caching can be used to improve performance and cost efficiency
+  * Methods of aching include:
+    * Application Data Caching - examples are Amazon ElastiCache (in-memory database) and DynamoDB DAX (accelerator)
+    * Edge Caching - key example is CloudFront
+* Security
+  * Use AWS Features for Defense in Depth
+  * Share Security Responsibility with AWS
+  * Reduce Privileged Access
+  * Security as Code - for instance, use CloudFormation to repeatably build secure environments
+* Real-Time Auditing - tools such as Trusted Advisor, AWS Config, and Amazon Inspector
+
+## The Five Pillars of Operational Excellence
+* Operational Excellence - The operational excellence pillar includes the ability to run and monitor systems to delivery business value and to continually improve supporting processes and procedures
+* Security - The security pillar includes the ability to protect information, systems, and assets while delivering business value through risk assessments and mitigation strategies
+* Reliability - The reliability pillar includes the ability of a system to recovery from infrastructure or service disruptions, dynamically acquire computing resources to meet demand, and mitigate disruptions such a misconfigurations or transient network issues
+* Performance Efficiency - The performance efficiency pillar includes the ability to use computing resources efficiently to meet system requirements and to maintain that efficiency as demand changes and technologies evolve
+* Cost Optimization - The cost optimization pillar includes the ability to avoid or eliminate unneeded cost or suboptimal resources
