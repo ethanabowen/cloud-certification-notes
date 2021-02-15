@@ -1,5 +1,3 @@
-# AWS Architectural Excellence Notes
-
 ## Operation Excellence
 ### Organization
 
