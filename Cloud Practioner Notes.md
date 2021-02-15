@@ -1,4 +1,4 @@
-#### Domains of the test
+# Domains of the test
 Domain 1: Cloud Concepts
   * Define the AWS Cloud and its value proposition
   * Identify aspects of AWS Cloud economics
