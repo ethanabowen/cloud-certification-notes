@@ -1,1 +1,3 @@
-# aws-certification-prep
+# Certification Perp
+
+Notes taken for certification prep
