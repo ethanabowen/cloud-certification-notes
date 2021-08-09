@@ -1,3 +1,1 @@
-# Certification Perp
-
-Notes taken for certification prep
+# Cloud Certification Notes
