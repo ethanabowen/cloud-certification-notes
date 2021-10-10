@@ -17,6 +17,8 @@
   * Partition - spreads your instances across logical partitions such that groups of instances in one partition **do not share the underlying hardware** with groups of instances in different partitions.  This strategy is typically used to large **distributed and replicated workloads**, such as Hadoop, Cassandra, and Kafka.
     * Separate AWS racks
  * Spread - strictly places a small group of instances across **distinct underlying hardware** to reduce correlated failures.
+* Instance Types
+  ![EC2 Instance Types](/diagrams/ec2_instance_types.png)
 * Network Interfaces
   * Elastic Network Interface - public/private IP
     * Basic adapter type for when you don't have high-performance requirements
@@ -161,9 +163,11 @@
   * Load Balancers route to Target Groups.  Groupings of instances in subnets to route to.
     * Can balance between Target Groups with the LB Listener Rules
   * ELB
-  ![load_balancers_1](/diagrams/load_balancers_1.png)
-  ![load_balancers_2](/diagrams/load_balancers_2.png)
+    * Access logging is option and disabled by default
+    ![load_balancers_1](/diagrams/load_balancers_1.png)
+    ![load_balancers_2](/diagrams/load_balancers_2.png)
   * Application Load Balancer - HTTP/HTTPS protocols. Layer 7 routing.  Host-based, Path-based, HTTP header-based, HTTP method-based, Query string parameter-based, Source IP address CIDR-based routing.
+    * Supports **Weighted Target Groups**, think Blue-Green deployments
   ![ALB Routing](/diagrams/alb_routing.png)
   * Network Load Balancer - TCP,TLS,UDP,TCP_UDP protocols. Doesn't support path-based routing or host-based routing
     * Used with VPC Endpoint services.
@@ -179,7 +183,7 @@
     * Used in frotn of virtual applinces such as firewalls, IDS/IPS, and deep packet inspection systems.
  * Scaling
    * Dynamic - elastic scaling by configuration
-   * Step - scaling rate at intervals.  Example 2/4/6 instances based on 50,75,90 % CPU utilization
+   * Step - scaling rate at intervals.  Example 2/4/6 instances based on 50,75,90 % CPU utilization.  **Can be based on multiple metrics**
    * Scheduled - interval scaling
    * Predictive - intelligent scaling, managed by AWS?
  * SSl/TLS Termination
@@ -271,7 +275,7 @@
    ![Direct Connect Multi-Region](/diagrams/transit_gateway_dx.png)
 * IPv6
   * Hexidemical notation
-  * Egress-only Internet Gateway - outbound for IPv6, but not inbound
+  * **Egress-only Internet Gateway - outbound for IPv6**, but not inbound
   * Your subnet has an IPv4 address AND IPv6 address.
   * IPv6 Address example:   2020 : 0001 : 9d32 : 5bc2 : 1c48 : 32c1 : a93b : b12c
     * Network Part is 2020 : 0001 : 9d32 : 5bc2
@@ -281,6 +285,8 @@
   * IP Traffic in and out of a VPC
   * Integrates with CloudWatch and S3
   * Can be connected at the VPC, the Subnet, and/or a Network Interface
+* Equal-cost multi-path (ECMP) routing supports traffic over multiple VPN tunnels.
+  * A single VPN tunnel still has a maximum throughput of 1.25 Gbps. If you establish multiple VPN tunnels to an ECMP-enabled transit gateway, it can scale beyond the default limit of 1.25 Gbps.
 
 # S3
 * Key-Value store. 5tb file max.
@@ -291,6 +297,7 @@
 * S3 Object Permissions can be Public while the Bucket is Private
 * ACL - Can grant account access via canonical value
 * Replication rules apply for NEW changes to a bucket, doesn't move exist files over.
+* _bucket-owner-full-control_ can be forced for all files via a bucket policy
 * **Lifecycle Rules** -  All or filtered objects.
   * Transition current or previosu versions between storage classes
   * Expire current versions of objects
@@ -347,7 +354,7 @@
 * Hosted Zone represents a set of records belonging to a domain
   * **A record points to IP**
   * **Alias record point to domain, can point to Load Balancer**
-  * You can migrate hosted zones in and out of Route 54
+  * You can migrate hosted zones in and out of Route 53
 * Domain Registration
 * Health checks of ec2 instances
 * Traffic Flow
@@ -364,6 +371,7 @@
   * Latency routing is when AWS selects the best region based on location
   * Multivalue is for load balancing
 * Resolver - Inbound and Outbound Endpoints (names of network interfaces) resolve and return DNS lookups between EC2 instances and External clients over VPN/Private connections
+* With an A record aliased, Route 53 will route all traffic addressed to your website "www.ethanabowen.com" to the load balancer DNS "madeupelsdnsaddress.elb.amazonaws.com")."
 
 # CloudFront
 * AWS Global Internet, not public
@@ -376,7 +384,8 @@
     * Origin Request Policy - configuration of security between Edge to Origin
 * Regional Edge Cache (Only 1 per region) - longer TTL, sits between Origin and Edge.  Default 24 hours cached
 * File is removed when TTL expires
-* Low TTL is best for Dynamic Content
+* Low TTL is best for Dynamic Content.
+  * Versioning is suggested as well
 * TTL can be file-type specific
 * Cache-Control max-age=(seconds) = CF will go get the file from origin about duration
 * **Caching Based on Request Headers**
@@ -416,3 +425,144 @@
   * These must be whitelisted by the customer to be used
 * Make sure you configure your Load Balancer and GA health checks
 * **Automatic routing to the nearest region, with failover possible to other regions**
+
+# EBS
+* \# of IOPS is instanceIOPS * GiB.   So a 10 GiB volume with an instance of 50 IOPS can have 500 IOPS max.
+* 4 classes of volumnes
+  * 2 for high IO, low latency - Provisioned IOP SSD (io1), General Purpose SSD (gp2)
+  * 2 for sequencial IO without need for latency, etc (maintain high queue length) - Throughput Optimized HDD (st1), Cold HDD (sc1) sc2
+* Network Attached Storage - NIC -> <-Network Switch-> -> Network Attached Storage Server (NAS)
+* Multi-Attach up to 16 EC2 instances (Nitro) to io1 volume in same AZ
+* **st1 and sc1 can not be boot volumes!**
+* Backup - Snapshot, point-in-time copy stored in S3 (regionally)
+  * Ex1. Move to new AZ - backup and restore into new AZ
+  * Ex2. Snapshot -> AMI -> Volume in new AZ
+* **When encrypting (from a copy) Snapshots/Volumes/AMIs, you cannot move across regional boundaries, ony AZ.**
+  * Snapshot of an encrypted volume is encrypted.
+* **Basically, Encryption = cross-AZ, Unencrypted = cross-Region**  
+* Data on an encrypted volume is encrypted-at-rest and encrypted-in-transit (between the instance and the volume)
+* **Encrpytion by default** is a Region-specific setting
+* EBS supports symettics CMK keys only
+* Use Amazon Data Lifecycle Manager (Amazon DLM) to automate the creation of EBS snapshots
+  * Can automate backups to another account for DR
+  * Target resources by TAGS!
+* RAID - Redundant Array of Independent Disks
+  * Must be configured via OS
+  * RAID 0 and 1 are available
+  * RAID 0 - stripping, using 2 or more disks.
+    * If 1 disk fails, the entire RAID set fails
+    * Read and Write from multiple volumes
+  * RAID 1 - Mirror data.  Data written to at least 2 disks at a time.
+
+# EFS
+* Uses NFS Protocol.
+* Multiple EC2 instances can connect at the same time
+* **Linux only**
+* Can connect instance from other VPCs or VPN
+* **Cross-region/accounts via Mount Target IP and peering connection**
+* EFS encryption is are creation only
+* File System Policy can be created to prevent root access, read-only access, anaymouse access and/or enforce in-transit encrpytion for all clients.  Out of the box.
+
+# Amazon FSx
+* **Fully managed third-party file systems**
+* Windows File Server for Windows-based applications.
+  * **NTFS** file systems are accessible via **SMB** protocol from EC2 instances
+  * AZ replications for HA
+  * Multi-AZ Replication with active and standby file server options
+  ![FSx Windows](/diagrams/fsx_windows.png)
+* **Lustre for compute-intensive workloads**
+  * ML, HPC, automation, modeling
+  * **Works natively with S3**.  The objects in S3 are presented as if in file system.
+  * POSIX compliant
+  * VPN connection capible
+  ![FSx Lustre](/diagrams/fsx_lustre.png)
+
+# Storage Gateway
+  ![Storage Gateway](/diagrams/storage_gateway.png)
+* On-prem to (optional cached) Cloud data storage intergration/migration
+* Volume Gateway
+  * Block-based volumes - iSCSI
+  * Cached mode - stored in S3 and cache of most frequently accessed data is cached on-site
+  * Volume mode - store on-site and is asynchronously backed up to S3
+    * **EBS point-in-time snapshots**
+    * Snapshots are incremental and compressed.
+* Tape Gateway
+  * **Provides low-latency access to data by caching frequently accessed data on-premises while storing the archive data securely and durable in Amazon cloud storage services.**
+  * Caches virtual tapes on-premises for low-latency data access
+  * Not suitable for large data.
+
+# File Gateway
+* Application Server -> File Gateway (NFS/SMB) (amount specified) --evicted--HTTPS --> S3 bucket
+
+# Amazon RDS
+* Enable Multi-AZ Deployment for automatic failover into another **AZ**.
+  * HA during system upgrades like OS patching or DB Instance scaling.
+* Enhanced Monitoring metrics for CW from RDS - OS Processes and RDS child processes
+* IAM DB authentication exists - encryptes DB with SSL (Cert).
+* AWSAuthenticationPlugin — an AWS-provided plugin (in MySQL) that works seamlessly with IAM to authenticate your IAM users.
+* Doesn't scale like Aurora and is also only Relational implementations
+* For SQL Server DB instances, RDS creates an SSL certificate for it.  Can be used to For SSL and Encrypt specific connections.
+  * Use rds.force_ssl = true to for SSL communication only to the DB.  Reboot required.
+
+# Aurora
+* Multi-master setting adds the ability to scale out write performance across multiple AZ and provides configurable **read after write** consistency.
+* On failover, without read-replicas, will createa  new DB Instance in the same AZ as the original instance and is done on a best-effort basis.
+* MySql and PostgreSQL
+* Up to 64 tebibytes (TiB)
+* Automates and standardizes database clustering and replication
+
+# DynamoDB
+* Streams - capture table activity and automatically trigger the Lambda function
+*
+
+# CloudWatch Logs/Alarms
+* Custom metrics can be created to restart EC2 instances, etc.
+  * Standard resolution - every 1 minute
+  * High resolution - faster, ec2 setting?
+* Unified CW Agent - enables you yo Collect log and metrics from **on-prem** servers
+
+# Kinesis Data Streams
+* Durable, sequence processing.
+* Set of shards that has a sequence of data records, and each data record has a sequence number that is assigned by KDS
+![Kinesis Data Streams](/diagrams/kinesis_data_streams.png)
+* UpdateShardCount and MergeShard are valid commands that increase and decrease, respectively, data capacity and cost
+
+# AWS Backup
+* Automated cross-account backup of resources (ebs, efs, ec2, FSx, RDS, DynamoDB, Aurora)
+
+# CloudTrail
+* Organization trail - capture all accounts in an Organization, Admins cannot modify or delete the trail
+* Trigger on Root user account API event - EventBridge rule that filters for root API events and configure an SNS notification
+
+# Config
+* Configuration audit. Configuration rules can be defined.
+* Auto Remediation can take action on findings
+
+# SQS
+* Can set ApproximateAgeOfOldestMessage in CloudWath Alarm with ASG to ensure messages aren't getting old and are processed quickly.
+
+# AWS Database Migration Service
+* **Homo and Hetero -genious** database migration from on-prem to AWS cloud!
+* Examples
+  * Oracle -> Oracle
+  * Oracle -> Aurora
+  * On prem -> RDS or EC2
+  * EC2 -> RDS
+  * RDS -> RDS
+  * **SQL <-> NoSQL**
+  * text based targets
+* **Heterogenious migrations** have two step progress migration processes
+  * 1st - Run the **AWS Schema Conversion Tool** to convert the source schema and code to match target database
+  * 2nd - Run the AWS Database Migration Service to migrate data from the source database to the target database
+
+# AWS Systems Manager Run Command
+* Remotely and securely manage the configuration of your managed instances (EC2 AND on-prem!)
+* Intended for the automation of admin tasks or ad hoc changes at scale
+
+# AWS DataSync
+* Simplifies, automates, and accelerates moving of datasets to AWS
+* Can be active datasets
+
+# Redis
+* AUTH command requires password before granted access to Redis commands on a password-protected Redis server
+  * Enable --transit-encrpytion-enabled and --auth-token parameters
