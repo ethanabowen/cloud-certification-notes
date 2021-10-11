@@ -175,6 +175,7 @@
     * **Static IP addresses**
     ![NLB Routing](/diagrams/nlb_routing.png)
     * A Network Load Balancer deploys virtual nodes in each subnet it's associated with, associates those nodes to an Elastic IP address, and points to a Target Group of EC2 instances that can be managed by an Auto-Scaling Group.  When one of those instances goes down, the Auto-Scaling Group will deploy a new instance based on the Launch Template associated with the ASG.
+    * BYOIP - Bring your own IP.  Can assign your own IP to NLP, doing so removes the need to update and existing whitelists
   * Classic Load Balancer - EC2-Classic network only.  Doesn't support path-based routing or host-based routing.
   * Gateway Load Balancer
     * Layer 3 - listens for all packets on all ports.
@@ -183,9 +184,10 @@
     * Used in frotn of virtual applinces such as firewalls, IDS/IPS, and deep packet inspection systems.
  * Scaling
    * Dynamic - elastic scaling by configuration
-   * Step - scaling rate at intervals.  Example 2/4/6 instances based on 50,75,90 % CPU utilization.  **Can be based on multiple metrics**
+   * Step - scaling rate at intervals.  Example 2/4/6 instances based on 50,75,90 % CPU utilization.  **Can be based on multiple metrics**.  Can bypass grace period for scaling
    * Scheduled - interval scaling
    * Predictive - intelligent scaling, managed by AWS?
+   * Target Tracking - Multi value, can bypass grace period for scaling
  * SSl/TLS Termination
    * TLS Termination means that the Load Balancer will be the final place in a request that the network communication is encrpyted
    ![ALB SSL/TLS Termination](/diagrams/ssl_tls_termination_1.png)
@@ -224,6 +226,12 @@
 * Stateful vs Stateless Firewalls
   * Network ACL - Stateless.  Must allow rule for inbound and outbund communications
   * Security Groups - Stateful.  Allows the RETURN (outbound) TRAFFIC automatically.  Only need to apply single rule.
+* Custom Metrics
+  * Memory utilization
+  * Disk swap utilization
+  * Disk space utilization
+  * Page file utilization
+  * Log collection
 
 # VPC Connection Types
 * VPC Peering
@@ -362,7 +370,7 @@
   * **Authorize associatation with VPC in a second account**
   * **Create an association in the second account**
 * A record, AAAA record? DNS Alias record
-* CNAME - Subnet Alias?
+* CNAME - ex.   **console**.aws.com vs aws.com
 * Routing Policies
   * Failover Routing will direct to secondary if primary is down
   * Geoproximity is GeoLocation (you set location:region mapping) routing with preset location bias.
@@ -480,6 +488,7 @@
 # Storage Gateway
   ![Storage Gateway](/diagrams/storage_gateway.png)
 * On-prem to (optional cached) Cloud data storage intergration/migration
+* Can go directly to S3 Glacier Deep Archive
 * Volume Gateway
   * Block-based volumes - iSCSI
   * Cached mode - stored in S3 and cache of most frequently accessed data is cached on-site
@@ -497,6 +506,8 @@
 # Amazon RDS
 * Enable Multi-AZ Deployment for automatic failover into another **AZ**.
   * HA during system upgrades like OS patching or DB Instance scaling.
+  * Synchronous standby replica in different AZ
+  * CNAME is switched from primary to standby instance.
 * Enhanced Monitoring metrics for CW from RDS - OS Processes and RDS child processes
 * IAM DB authentication exists - encryptes DB with SSL (Cert).
 * AWSAuthenticationPlugin — an AWS-provided plugin (in MySQL) that works seamlessly with IAM to authenticate your IAM users.
@@ -510,22 +521,28 @@
 * MySql and PostgreSQL
 * Up to 64 tebibytes (TiB)
 * Automates and standardizes database clustering and replication
+* Serverless - on-demand, auto-scaling configuration
+* Provisioned - non-Serverless
+* Reader Endpoint for expected larged Read requests
 
 # DynamoDB
 * Streams - capture table activity and automatically trigger the Lambda function
-*
+* Accelerator (DAX) - fully managed, HA, in-memory cache.  Milliseconds to Microseconds. 1 million+ response per second capable.
 
 # CloudWatch Logs/Alarms
 * Custom metrics can be created to restart EC2 instances, etc.
   * Standard resolution - every 1 minute
   * High resolution - faster, ec2 setting?
-* Unified CW Agent - enables you yo Collect log and metrics from **on-prem** servers
+* Unified CW Agent - enables you to Collect log and metrics from **on-prem** servers
 
 # Kinesis Data Streams
 * Durable, sequence processing.
 * Set of shards that has a sequence of data records, and each data record has a sequence number that is assigned by KDS
 ![Kinesis Data Streams](/diagrams/kinesis_data_streams.png)
-* UpdateShardCount and MergeShard are valid commands that increase and decrease, respectively, data capacity and cost
+* **UpdateShardCount** and **MergeShard** are valid commands that increase and decrease, respectively, data capacity and cost
+* A new shard iterator is returned by every **GetRecords** call (as _NextShardIterator_), allowing you to use in the next **GetRecords** requests (as _ShardIterator_)
+  * Shard iterators **expire** because you have not called **GetRecords** for more thatn 5 minutes, or because of some application freeze/restart.
+  * Increasing the write capacity assigned to the shard table can reduce share iterator expiries.
 
 # AWS Backup
 * Automated cross-account backup of resources (ebs, efs, ec2, FSx, RDS, DynamoDB, Aurora)
@@ -540,6 +557,7 @@
 
 # SQS
 * Can set ApproximateAgeOfOldestMessage in CloudWath Alarm with ASG to ensure messages aren't getting old and are processed quickly.
+* 14 day max!
 
 # AWS Database Migration Service
 * **Homo and Hetero -genious** database migration from on-prem to AWS cloud!
@@ -562,7 +580,40 @@
 # AWS DataSync
 * Simplifies, automates, and accelerates moving of datasets to AWS
 * Can be active datasets
+* Can go directly to S3 Glacier Deep Archive
 
 # Redis
 * AUTH command requires password before granted access to Redis commands on a password-protected Redis server
   * Enable --transit-encrpytion-enabled and --auth-token parameters
+
+# AWS GuardDuty
+* Continuous-monitoring threat detection software
+
+# Macie
+* Scan S3 data for PII/PHI/etc and report on it.
+
+# API Gateway
+* Can cache and throttle calls
+
+# Active Director Federation Service (AD FS)
+* Basically, SAML federation with Microsoft AD
+
+# AWS Resource Access Manager
+* Resource Share - Share resources across AWS accounts of AWS Organizations
+  * **Select** Resources -> **Specify** Principals -> **Share** Resources
+
+# Amazon EMR cluster (S3/Storage Source -> format/process -> Redshift)
+* "big data processing frameworks"
+* "various business intelligence tools and standard SQL queries" to analyze the data.
+* EMR will perform data transformations (ETL) and load the processed data into Amazon Redshift for analytic and business intelligence applications.
+
+# WAF - common security protection (SQL-injection, cross-site scripting, filter out traffic patterns)
+* Can be attached to ALB, API Gateway, CloudFront
+* Web ACLs - rules that can match request attributes: URI, query-string, HTTP method, header key, etc.
+* DDoS protection - use web ACLs with rate-based (5-minute period) rules **as part of your AWS Shield Advanced protection**
+* Whitelist/Blacklist of IPs/etc.
+
+# Snowball Edge
+* Shippable Snowball device with computer and storage capabilities.
+* Petabyte scale
+* If it's going to take 1 week+ to uplaod your data, consider a Snowball device
