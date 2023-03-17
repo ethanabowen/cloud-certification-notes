@@ -1,4 +1,3 @@
-* Use Amazon Data Lifecycle Manager (Amazon DLM) to automate the creation of EBS snapshots
 * Amazon EMR cluster (S3/Storage Source -> format/process -> Redshift)
   * "big data processing frameworks"
   * "various business intelligence tools and standard SQL queries" to analyze the data.
@@ -8,17 +7,15 @@
 * WAF - common security protection (SQL-injection, cross-site scripting, filter out traffic patterns)
   * Can be attached to ALB, API Gateway, CloudFront
   * Web ACLs - rules that can match request attributes: URI, query-string, HTTP method, header key, etc.
-  * DDoS protection - use web ACLs with rate-based (5-minute period) rules as part of your AWS Shield Advanced protection.
+  * DDoS protection - use web ACLs with rate-based (5-minute period) rules **as part of your AWS Shield Advanced protection**
   * Whitelist/Blacklist of IPs/etc.
 * AWS GuardDuty - continuous-monitoring threat detection software
 * AWS Firewall - WAF + Shield implementation simplification, multi-account and resources.
-* Tape Gateway
-  * **Provides low-latency access to data by caching frequently accessed data on-premises while storing the archive data securely and durable in Amazon cloud storage services.**
-  * Caches virtual tapes on-premises for low-latency data access
-  * Not suitable for large data.
-* Config - configuration audit. Configuration rules can be defined.
+
+
 * Trusted Advisor - best practice recommendations.  Cannot define rules.
+  * Resource Groups Tag Editor - add/edit/delete tags to multple AWS resources
 * Snowball Edge - shippable Snowball device with computer and storage capabilities.
 * RDS - Failure on the primary triggers an automatic change in CNAME by RDS to the standby in a different AZ, the standby becomes the new primary.
-* AWS DataSync
+
 * OpWorks - Chef and Puppet management for automation of servers SDLC

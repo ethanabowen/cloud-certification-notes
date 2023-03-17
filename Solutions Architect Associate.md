@@ -260,6 +260,7 @@
   * Hub-and-Spoke model
   * 1 VGW to N Customer Gateways
   * Each Spoke must have a unique BGP ASN, Border Gateway Protocol Autonomous System Number
+    * BGP - use for advertizing routes to different parts of your network
   * Connections are VPN (IPSec VPN)
   * **Does support transitive communication between Spokes**!
   ![AWS VPN CloudHub](/diagrams/aws_vpn_cloudhub.png)
@@ -450,7 +451,7 @@
 * **Basically, Encryption = cross-AZ, Unencrypted = cross-Region**  
 * Data on an encrypted volume is encrypted-at-rest and encrypted-in-transit (between the instance and the volume)
 * **Encrpytion by default** is a Region-specific setting
-* EBS supports symettics CMK keys only
+* EBS supports symetric CMK keys only
 * Use Amazon Data Lifecycle Manager (Amazon DLM) to automate the creation of EBS snapshots
   * Can automate backups to another account for DR
   * Target resources by TAGS!
@@ -469,7 +470,7 @@
 * Can connect instance from other VPCs or VPN
 * **Cross-region/accounts via Mount Target IP and peering connection**
 * EFS encryption is are creation only
-* File System Policy can be created to prevent root access, read-only access, anaymouse access and/or enforce in-transit encrpytion for all clients.  Out of the box.
+* File System Policy can be created to prevent root access, read-only access, anonymous access and/or enforce in-transit encrpytion for all clients.  Out of the box.
 
 # Amazon FSx
 * **Fully managed third-party file systems**
